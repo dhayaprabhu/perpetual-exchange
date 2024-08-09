@@ -1,0 +1,75 @@
+npx hardhat run --network skale scripts/blu/deployBLU.js
+npx hardhat verify --network skale 0x7Ae4C9Be5053603c980b7101858e234594C77dB5
+npx hardhat run --network skale scripts/core/deployVault.js
+
+npx hardhat run --network skale scripts/peripherals/deployVaultReader.js
+npx hardhat run --network skale scripts/peripherals/deployReader.js
+npx hardhat run --network skale scripts/peripherals/deployRewardReader.js
+npx hardhat run --network skale scripts/blu/deployTokens.js
+
+// change contract addresses
+npx hardhat run --network skale scripts/staking/deployRewardRouterV2.js
+
+// change contract addresses
+npx hardhat run --network skale scripts/core/deployOrderBook.js
+
+// npx hardhat run --network skale scripts/core/deployOrderExecutor.js
+npx hardhat run --network skale scripts/peripherals/deployOrderBookReader.js
+
+npx hardhat run --network skale scripts/core/deployReferralStorage.js
+
+//PositionRouter should be vault ReferralStorage's handler
+
+npx hardhat run --network skale scripts/core/deployReferralReader.js
+npx hardhat run --network skale scripts/core/deployShortsTracker.js
+npx hardhat run --network skale scripts/access/deployTokenManager.js
+
+npx hardhat run --network skale scripts/core/deployPositionManager.js
+npx hardhat run --network skale scripts/core/deployPositionRouter.js
+
+
+//vault price feed set token config
+npx hardhat run --network skale scripts/core/vaultSetTokenConfig.js
+
+//Set Tokens Per Interval for RewardDistributor 0.001
+feeBLU distritutor 0.001(0.0001)/ 	1000000000000000
+feeBLP distributor 0.002(0.0002)/   2000000000000000
+stakedBLU distributor 0.004(0.0004)/    4000000000000000
+stakedBLP distributor 0
+bonusBLU distributor 10000(1000)
+
+//Mint EsBLU token to StakedBluDistributor 200000
+//Mint EsBLU token to StakedBlpDistributor 200000
+//Mint bnBLU token to BonusBluDistributor 10000000
+//Deposit WMATIC token to feeBLUDistributor
+//Deposit WMATIC token to feeBLPDistributor
+
+//Mint BLU token to bluVester, glpVester 200000
+
+npx hardhat run --network skale scripts/peripherals/deployTimelock.js
+PositionRouter should be vault timelock's contract handler
+PositionManager should be vault timelock's contract handler
+
+//setMaxLeverage for Vault
+
+npx hardhat run --network skale scripts/peripherals/deployBatchSender.js
+
+//used for backend
+npx hardhat run --network skale scripts/peripherals/deployPriceFeedTimelock.js
+npx hardhat run --network skale scripts/core/deployPriceFeed.js
+
+npx hardhat run --network skale .\scripts\core\setMaxGlobalSizes.js // For short trading, can call functions on web scan
+
+//deploy referral subgraph
+https://thegraph.com/docs/en/deploying/deploying-a-subgraph-to-hosted/
+In subgraph.yaml file, all startBlock's value will be setTier transaction's block number - 1
+
+reward distributers should have esMMS as rewardtoken
+src\pages\ClaimEsBlu\ClaimEsBlu.js has receiver addresses
+
+//complex contract verify
+npx hardhat verify --constructor-args arguments.js DEPLOYED_CONTRACT_ADDRESS
+npx hardhat verify --network skale --constructor-args verify/TimeLock.js 0x75be73dAB8EcF685DdA1701b23c12dBb8eDDf07b
+npx hardhat verify --network skale --constructor-args verify/FastPriceFeed.js 0x89391F8093c853F1f190879ceB01B53c3c65f9cF
+npx hardhat verify --network skale --constructor-args verify/bluVester.js 0x1e5e40bD56AE9f411f628200606f60dfD486323d
+npx hardhat verify --network skale --constructor-args verify/blpVester.js 0x25EB35a6E2DE9C619366f15c0498517Fa6a500F1
